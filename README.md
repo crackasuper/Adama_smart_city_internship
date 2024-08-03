@@ -1,0 +1,1 @@
+# Adama_smart_city_internship
