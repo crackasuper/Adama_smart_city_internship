@@ -40,6 +40,10 @@ INSTALLED_APPS = [
     'shop',
     'rest_framework',
     'cors_headers'
+    'jazzmin',
+    'carts',
+    'core',
+    'order'
 ]
 
 MIDDLEWARE = [
@@ -51,6 +55,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'store'
+LOGOUT_REDIRECT_URL = '/'
+ROOT_URLCONF = 'eco.urls'
+
 
 ROOT_URLCONF = 'ecommerce.urls'
 
@@ -81,6 +92,13 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
+}
+
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+    messages.SUCCESS: 'success',
 }
 
 
@@ -121,3 +139,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
