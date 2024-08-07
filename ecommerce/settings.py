@@ -68,7 +68,7 @@ ROOT_URLCONF = 'ecommerce.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -133,6 +133,11 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+STATIC_URL = 'static/'
+STATIC_ROOT =BASE_DIR  /"static"
+MEDIA_URL="/media/"
+MEDIA_ROOT=BASE_DIR /"media"
 
 
 # Static files (CSS, JavaScript, Images)
