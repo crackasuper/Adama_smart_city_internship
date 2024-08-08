@@ -14,8 +14,106 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <link href="{% static 'fonts/fontawesome/css/all.min.css' %}" type="text/css" rel="stylesheet">
+    <style type="text/css">
+        .navbar-brand span {
+            display: flex;
+            align-items: center;
+        }
+        .navbar-brand span img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-right: 10px;
+            margin-top: 5px;
+            margin-left: 2px;
+
+        }
+        .navbar-brand span h2 {
+            display: inline-block;
+            margin: 0;
+        }
+        body {
+            background-color: #F9F9F9;
+            color: #333333;
+        }
+        .navbar {
+            background-color: #003366; /* Dark Blue */
+            padding: 0.5rem 1rem;/* Adjust the padding as needed */
+            
+        }
+        .navbar-brand {
+            padding: 0.5rem 1rem; /* Adjust the padding for the brand */
+        }
+        .navbar-nav .nav-item {
+            padding: 0.5rem; /* Adjust padding for nav items */
+        }
+        .navbar-nav .nav-link {
+            padding: 0.5rem 1rem; /* Adjust padding for nav links */
+            color: #F9F9F9; /* Light Gray */
+        }
+        .navbar-nav .nav-link:hover {
+            color: #FF6F61; /* Coral */
+        }
+        .dropdown-menu {
+            background-color: #003366; /* Dark Blue */
+            border: none;
+        }
+        .dropdown-item {
+            color: #F9F9F9; /* Light Gray */
+        }
+        .dropdown-item:hover {
+            background-color: #FF6F61; /* Coral */
+            color: #003366; /* Dark Blue */
+        }
+        .btn-outline-primary {
+            border-color: #FF6F61; /* Coral */
+            color: #FF6F61; /* Coral */
+        }
+        .btn-outline-primary:hover {
+            background-color: #FF6F61; /* Coral */
+            color: #003366; /* Dark Blue */
+        }
+        .footer-bottom {
+            background-color: #003366; /* Dark Blue */
+            color: #F9F9F9; /* Light Gray */
+            
+            
+        }
+        .footer-bottom i {
+            color: #FF6F61; /* Coral */
+        }
+        .navbar-brand span {
+            color: #FF6F61; /* Coral */
+        }
+ .back-to-top {
+    background-color: #FF6F61;
+    border-radius: 50%;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+  }
+        
+
+    </style>
 </head>
 <body>
-    
+    <header class="section-header">
+        <nav class="navbar-navbar-expand-lg-navbar-dark">
+            <div class="container">
+                <a href="{% url 'home' %}" class="navbar-brand">
+                    <span> 
+                        <img src="{% static 'images/1.jpeg' %}" alt="">
+                        <h2>|Online Shopping </h2></span>
+                </a>
+            </div>
+        </nav>
+
+    </header>
 </body>
 </html>
