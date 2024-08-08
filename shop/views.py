@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Product
 from core.models import Category
-from carts.views import _cart_id
+from carts.views import *
 from carts.models import CartItem
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
@@ -27,7 +27,7 @@ def store(request, category_slug=None):
 
 def product_detail(request, category_slug, product_slug):
     detail = get_object_or_404(Product, category__slug=category_slug, slug=product_slug)
-    in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request), product=detail).exists()
+    in_cart = CartItem.objects.filter(cart__cart_id=cart_id(request), product=detail).exists()
     return render(request, "product-detail.html", {"detail": detail, "in_cart": in_cart})
 
 def search(request):

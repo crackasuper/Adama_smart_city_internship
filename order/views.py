@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import OrderForm
 from .models import Order, OrderProduct
 from carts.models import Cart, CartItem
-from carts.views import _cart_id
+from carts.views import cart_id
 from shop.models import Product
 
 @login_required(login_url="login")
@@ -15,7 +15,7 @@ def place_order(request, total=0, quantity=0, cart_item=None, carts=0):
     final = 0
     tax = 0
     try:
-        cart = Cart.objects.get(cart_id=_cart_id(request))
+        cart = Cart.objects.get(cart_id=cart_id(request))
         cart_item = CartItem.objects.filter(cart=cart, is_active=True)
         
         if request.user.is_authenticated:
