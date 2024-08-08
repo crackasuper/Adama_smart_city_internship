@@ -140,3 +140,11 @@ def cart(request, total=0, quantity=0, cart_item=None, carts=0):
     return render(request, "cart.html", context)
 
 
+def checkout(request):
+    if request.method == 'POST':
+        pass
+    else:
+        cart_items = CartItem.objects.all()
+        return render(request, 'checkout.html', {'cart_items': cart_items})
+    return render(request, 'checkout.html')
+

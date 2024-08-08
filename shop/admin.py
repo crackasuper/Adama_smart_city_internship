@@ -5,7 +5,7 @@ from .models import *
 
 class ProductAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug":('product_name',)}
-    list_display = ('product_name', 'price', 'stock', 'created_at')
+    list_display = ('product_name', 'price', 'stock', 'created_date')
 
 class VariationAdmin(admin.ModelAdmin):
     list_display = ('product','variation_category','variation_value','is_active')

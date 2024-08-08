@@ -3,4 +3,4 @@ Django==5.0.7
 django-cors-headers==4.4.0
 djangorestframework==3.15.2
 sqlparse==0.5.1
-jazzmin
+jazzmin==3.0.0
