@@ -60,7 +60,8 @@ MIDDLEWARE = [
 
 LOGIN_REDIRECT_URL = 'shop'
 LOGOUT_REDIRECT_URL = '/'
-ROOT_URLCONF = 'ecommerce.urls'
+
+
 
 
 ROOT_URLCONF = 'ecommerce.urls'

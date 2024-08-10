@@ -12,23 +12,24 @@ from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class CustomLoginView(LoginView):
-    form_class = AuthenticationForm
+    
     template_name = 'registration/login.html'
-    fields = '__all__'
-   
-
-    def form_valid(self, form):
-        return super().form_valid(form)
+    next_page = 'home'
+    
 
 def LoginView(request):
     form = AuthenticationForm()
     return render(request, 'registration/login.html', {'form': form})
 
 
-class CustomLogoutView(LogoutView):
+class CustomLogoutView(LoginRequiredMixin, LogoutView):
+
+    
     template_name = 'registration/logged_out.html'
+    next_page = reverse_lazy('home')
 
 class CustomPasswordResetView(PasswordResetView):
     template_name = 'registration/password_reset.html'

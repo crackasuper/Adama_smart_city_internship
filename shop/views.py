@@ -8,7 +8,7 @@ from django.db.models import Q
 
 # Create your views here.
 
-def store(request, category_slug=None):
+def shop(request, category_slug=None):
     cat = Category.objects.all()
     if category_slug:
         categories = get_object_or_404(Category, slug=category_slug)
@@ -23,7 +23,7 @@ def store(request, category_slug=None):
         page = request.GET.get("page")
         paged_products = paginator.get_page(page)
         count = products.count()
-    return render(request, "store.html", {"products": paged_products, "count": count, "cat": cat})
+    return render(request, "shop.html", {"products": paged_products, "count": count, "cat": cat})
 
 def product_detail(request, category_slug, product_slug):
     detail = get_object_or_404(Product, category__slug=category_slug, slug=product_slug)
@@ -56,4 +56,4 @@ def search(request):
             'keyword': keyword,
         }
     
-    return render(request, "store.html", context)
+    return render(request, "shop.html", context)
