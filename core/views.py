@@ -7,12 +7,25 @@ from carts.models import *
 from .forms import SignUpForm
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView
 from django.contrib.auth.models import User
+from django.contrib import messages
+from django.contrib.auth.forms import AuthenticationForm
 
 class CustomLoginView(LoginView):
+    form_class = AuthenticationForm
     template_name = 'registration/login.html'
+    fields = '__all__'
+    redirect_authenticated_user = True
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+def LoginView(request):
+    form = AuthenticationForm()
+    return render(request, 'registration/login.html', {'form': form})
+
 
 class CustomLogoutView(LogoutView):
     template_name = 'registration/logged_out.html'
@@ -36,7 +49,7 @@ def home(request):
     cat = Category.objects.all()
     return render(request, 'index.html', {'products': products, 'cat':cat})
 
-    
+
 
 
 
