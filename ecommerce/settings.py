@@ -58,10 +58,9 @@ MIDDLEWARE = [
 ]
 
 
-LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'shop'
-LOGOUT_REDIRECT_URL = 'home'
-ROOT_URLCONF = 'eco.urls'
+LOGOUT_REDIRECT_URL = '/'
+ROOT_URLCONF = 'ecommerce.urls'
 
 
 ROOT_URLCONF = 'ecommerce.urls'
