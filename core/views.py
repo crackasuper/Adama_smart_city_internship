@@ -17,7 +17,7 @@ class CustomLoginView(LoginView):
     form_class = AuthenticationForm
     template_name = 'registration/login.html'
     fields = '__all__'
-    redirect_authenticated_user = True
+   
 
     def form_valid(self, form):
         return super().form_valid(form)
