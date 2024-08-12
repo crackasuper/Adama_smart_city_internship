@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'jazzmin',
     'carts',
     'core',
-    'order'
+    'order',
 ]
 
 MIDDLEWARE = [

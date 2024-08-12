@@ -3,9 +3,9 @@ from django.shortcuts import render,redirect,get_object_or_404
 from shop.models import Product,Variation
 from .models import Cart,CartItem
 from django.contrib.auth.decorators import login_required
-from shop.views import *
+#from shop.views import *
 # Create your views here.
-def cart_id(request):
+def cartIDs(request):
 	cart=request.session.session_key
 	if not cart:
 		cart=request.session.create()
@@ -29,7 +29,7 @@ def add_cart(request, product_id):
                 pass
 
     # Get or create a cart
-    cart, created = Cart.objects.get_or_create(cart_id=cart_id(request))
+    cart, created = Cart.objects.get_or_create(cart_id=cartIDs(request))
     
     is_cart_item_exists = CartItem.objects.filter(product=product, cart=cart).exists()
 
@@ -69,8 +69,8 @@ def add_cart(request, product_id):
             item.variations.clear()
             item.variations.add(*product_variation)
         item.save()
-    cart= Cart.objects.get(cart_id=cart_id(request))
-    print(cart)
+    cart= Cart.objects.get(cart_id=cartIDs(request))
+    #print(cart)
     cart_item=CartItem.objects.filter(cart=cart)
     if request.user.is_authenticated:
          for item in cart_item:
@@ -82,7 +82,7 @@ def add_cart(request, product_id):
 
     return redirect("cart")
 def remove_cart(request, product_id, cart_item_id):
-    cart = Cart.objects.get(cart_id=cart_id(request))
+    cart = Cart.objects.get(cart_id=cartIDs(request))
     product = get_object_or_404(Product, id=product_id)
     try:
         cart_item = CartItem.objects.get(product=product, cart=cart, id=cart_item_id)
@@ -99,7 +99,7 @@ def remove_cart(request, product_id, cart_item_id):
         pass
     return redirect("cart")
 def remove_cart_item(request, product_id, cart_item_id):
-    cart = Cart.objects.get(cart_id=cart_id(request))
+    cart = Cart.objects.get(cart_id=cartIDs(request))
     product = get_object_or_404(Product, id=product_id)
     try:
         cart_item = CartItem.objects.get(product=product, cart=cart, id=cart_item_id)
@@ -117,7 +117,7 @@ def cart(request, total=0, quantity=0, cart_item=None, carts=0):
     final = 0
     tax = 0
     try:
-        cart = Cart.objects.get(cart_id=cart_id(request))
+        cart = Cart.objects.get(cart_id=cartIDs(request))
         cart_item = CartItem.objects.filter(cart=cart, is_active=True)
      
             
