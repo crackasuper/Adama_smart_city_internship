@@ -16,7 +16,7 @@
                         </div> <!-- img-big-wrap.// -->
                     </article> <!-- gallery-wrap .end// -->
                 </aside>
-                <main class="col-md-6-border-left">
+                <main class="col-md-6 border-left">
                     <form action="{% url 'add_cart' detail.id %}" method="POST">
                         {% csrf_token %}
                        <article class="content-body">
@@ -43,6 +43,26 @@
                             </div>
                         </div>
                         <br>
+                        <div class="row">
+                            <div class="item-option-select">
+                                <h6>Choose Size</h6>
+                                <select name="size" class="form-control" id="">
+                                    <option value="" disabled selected>Select</option>
+                                    {% for i in detail.variation_set.sizes %}
+                                    <option value="{{ i.variation_value | lower }}"> {{ i.variation_value | capfirst}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <hr>
+                        {% if 0 >= detail.stock  %}
+                          <h5 class="text-danger">Out of Stock</h5>
+                        {% else %}
+                        <button class="btn btn-primary" type="submit"><span class="text">Add to Cart</span>
+                         <i class="fas fa-shopping-cart"></i>
+                        </button>
+                            
+                        {% endif %}
 
                        </article>
 
@@ -53,7 +73,67 @@
 
             </div>
         </div>
+        <br>
+        <h2>Customer review will go down here</h2>
 </section>
+
+<style>
+    .section-content.bg {
+        background-color: #f9f9f9;
+        padding: 3rem 0;
+    }
+    .title {
+        color: #49c310;
+        margin-bottom: 1rem;
+    }
+    .price {
+        color: #ff6f1f;
+    }
+    .item-option-select h6 {
+        color: #49c310;
+    }
+    .btn-primary {
+        background-color: #49c310;
+        border-color: #49c310;
+    }
+    .btn-primary:hover {
+        background-color: #ff6f1f;
+        border-color: #49c310;
+    }
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+    .btn-outline-primary {
+        border-color: #003366;
+        color: #003366;
+    }
+    .btn-outline-primary:hover {
+        background-color: #003366;
+        color: #FFFFFF;
+    }
+    .text-danger {
+        color: #FF6F61;
+    }
+    .card {
+        border: 1px solid #E0E0E0;
+        border-radius: 8px;
+    }
+    .card-body {
+        background-color: #FFFFFF;
+    }
+    .box {
+        border: 1px solid #E0E0E0;
+        border-radius: 8px;
+        background-color: #FFFFFF;
+    }
+    .icontext .text {
+        color: #003366;
+    }
+    .icontext .date {
+        color: #999999;
+    }
+</style>
 
     
 {% endblock %}
