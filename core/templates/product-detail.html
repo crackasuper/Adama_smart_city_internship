@@ -3,5 +3,57 @@
 
 {% block content %}
 
+<section class="section-content padding-y bg">
+    <div class="container">
+        <!-- ~~~~~~~~~~~~~~~~~~~~Component page start~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <div class="card">
+            <div class="row no-gutters">
+                <aside class="col-md-6">
+                    <article class="gallery-wrap"> 
+                        <div class="img-big-wrap">
+                            <a href="#"><img src="{{detail.image.url}}" alt="{{detail.product_name }}" class="img-fluid"></a>
+
+                        </div> <!-- img-big-wrap.// -->
+                    </article> <!-- gallery-wrap .end// -->
+                </aside>
+                <main class="col-md-6-border-left">
+                    <form action="{% url 'add_cart' detail.id %}" method="POST">
+                        {% csrf_token %}
+                       <article class="content-body">
+                        <h2 class="title">{{detail.product_name }}</h2>
+                        <div class="mb-3">
+                            <var class="price h4">
+                                ${{detail.price }}
+
+                            </var>
+                        </div>
+                        <p class="small text-muted"> {{detail.description }}</p>
+                        <hr>
+                        <div class="row">
+                            <div class="item-option-select">
+                                <h6>Choose Color</h6>
+                                <select name="color" class="form-control" id="">
+                                    <option value="" disabled selected>Select</option>
+                                    {% for i in detail.variation_set.colors %}
+                                        <option value="{{ i.variation_value | lower }}"> {{ i.variation_value | capfirst }}</option>
+                                        
+                                    {% endfor %}
+
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+
+                       </article>
+
+
+
+                    </form>
+                </main>
+
+            </div>
+        </div>
+</section>
+
     
 {% endblock %}
