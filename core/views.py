@@ -28,7 +28,7 @@ def LoginView(request):
 class CustomLogoutView(LoginRequiredMixin, LogoutView):
 
     
-    template_name = 'registration/logged_out.html'
+    # template_name = 'registration/logged_out.html'
     next_page = reverse_lazy('home')
 
 class CustomPasswordResetView(PasswordResetView):
