@@ -53,22 +53,22 @@
                                                         </a>
                                                     
                                                     
-                             
- <input type="text" class="form-control" value="{{ item.quantity }}">
-   <div class="input-group-append">
-   <form action="{% url 'add_cart' item.product.id %}" method="POST">
-   {% csrf_token %}
-   {% for i in item.variations.all %}
-      <input type="hidden" name="{{ i.variation_category | lower }}" value="{{ i.variation_value | capfirst }}">
-      {% endfor %}
-   <button type="submit" class="btn btn-light" id="button-minus">
-                                                            <i class="fa fa-plus"></i>
-                                                        </button>
-                                                        </form>
-                                                        </div>
-                                                    </div>
-                                                </div> <!-- input-group.// -->
-                                            </div> <!-- col.// -->
+                                                                    
+                                                            <input type="text" class="form-control" value="{{ item.quantity }}">
+                                                            <div class="input-group-append">
+                                                            <form action="{% url 'add_cart' item.product.id %}" method="POST">
+                                                            {% csrf_token %}
+                                                            {% for i in item.variations.all %}
+                                                                <input type="hidden" name="{{ i.variation_category | lower }}" value="{{ i.variation_value | capfirst }}">
+                                                                {% endfor %}
+                                                            <button type="submit" class="btn btn-light" id="button-minus">
+                                                                                                                        <i class="fa fa-plus"></i>
+                                                                                                </button>
+                                                                    </form>
+                                                             </div>
+                                                         </div>
+                                                    </div> <!-- input-group.// -->
+                                                </div> <!-- col.// -->
                                         </td>
                                         <td>
                                             <div class="price-wrap">
