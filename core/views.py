@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from order.models import Order
 from shop.models import *
 from .models import *
 from django.contrib.auth.decorators import login_required
@@ -7,12 +8,39 @@ from carts.models import *
 from .forms import SignUpForm
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .forms import UserForm, ProfileForm
+
+@login_required
+def profile(request):
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            return redirect('profile')
+    else:
+        user_form = UserForm(instance=request.user)
+        profile_form = ProfileForm(instance=request.user.profile)
+    return render(request, 'profile.html', {
+        'user_form': user_form,
+        'profile_form': profile_form
+    })
+
+
+class CustomPasswordResetView(PasswordResetView):
+    template_name = 'registration/password_reset_form.html'
+    success_url = reverse_lazy('password_reset_done')
+    email_template_name = 'registration/password_reset_email.html'
+
+
+
 
 class CustomLoginView(LoginView):
     
@@ -20,22 +48,21 @@ class CustomLoginView(LoginView):
     next_page = 'home'
     
 
-def LoginView(request):
-    form = AuthenticationForm()
-    return render(request, 'registration/login.html', {'form': form})
+# def LoginView(request):
+#     form = AuthenticationForm()
+#     return render(request, 'registration/login.html', {'form': form})
 
 
-class CustomLogoutView(LoginRequiredMixin, LogoutView):
+class CustomLogoutView(LogoutView):
+    template_name = 'registration/logged_out.html'
 
-    
-    # template_name = 'registration/logged_out.html'
-    next_page = reverse_lazy('home')
 
 class CustomPasswordResetView(PasswordResetView):
-    template_name = 'registration/password_reset.html'
-    email_template_name = 'registration/password_reset_email.html'
-    success_url = reverse_lazy('password_reset_done')
+        template_name = 'registration/password_reset_form.html'
+        success_url = reverse_lazy('password_reset_done')
+        email_template_name = 'registration/password_reset_email.html'
 
+   
 class SignUpView(CreateView):
     form_class = SignUpForm
     template_name = 'registration/signup.html'
@@ -50,8 +77,39 @@ def home(request):
     cat = Category.objects.all()
     return render(request, 'index.html', {'products': products, 'cat':cat})
 
+@login_required(login_url="login")
+def dashboard(request):
+    user = request.user
+    
+    # Profile Information
+    profile_info = {
+        'name': f'{user.first_name} {user.last_name}',
+        'email': user.email,
+        
+        #'phone': user.phone,
+       # 'location': user.location,
+        #'birth_date': user.birth_date
+        #'contact': user.profile.contact if hasattr(user, 'profile') else '',
+        #'address': user.profile.address if hasattr(user, 'profile') else '',
+    }
+    
+    # Order History
+    orders = Order.objects.filter(user=user, is_ordered=True)
+    
+
+    
+    context = {
+        'profile_info': profile_info,
+        'orders': orders,
+        
+    }
+    
+    return render(request, "dashboard.html", context)
 
 
+def logout_user(request):
+    logout(request)
+    return redirect('login')
 
 
 # Create your views here.

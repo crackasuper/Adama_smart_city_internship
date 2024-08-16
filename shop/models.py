@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from core.models import *
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -73,3 +74,16 @@ class Dashboard(models.Model):
     def __str__(self) -> str:
         return f'Dashboard for {self.date}'
     
+
+class Review(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating = models.IntegerField(default=1)  # Rating field
+    review_text = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def str(self):
+        return f'{self.user.username} - {self.product.product_name}'
+
+    class Meta:
+        unique_together = ('user', 'product')   

@@ -1,13 +1,28 @@
 
+import logging
+
 import random
 import uuid
-from django.shortcuts import render, redirect
+from venv import logger
+
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
+
+from ecommerce import settings
 from .forms import OrderForm
 from .models import Order, OrderProduct
 from carts.models import Cart, CartItem
 from carts.views import cartIDs
 from shop.models import Product
+from django.urls import reverse
+from django.db import transaction
+import requests
+
+
+
+
 
 @login_required(login_url="login")
 def place_order(request, total=0, quantity=0, cart_item=None, carts=0):
@@ -68,8 +83,9 @@ def place_order(request, total=0, quantity=0, cart_item=None, carts=0):
     return render(request, "place-order.html", context)
 
 @login_required(login_url="login")
+@transaction.atomic
 def payment(request, order_number):
-    order = Order.objects.get(order_number=order_number)
+    order = get_object_or_404(Order, order_number=order_number)
     total = 0
     cart_items = CartItem.objects.filter(user=request.user, is_active=True)
 
@@ -94,10 +110,52 @@ def payment(request, order_number):
         'order': order,
         'total': total,
         'final': final,
-        'cart_items':cart_items
+        'cart_items': cart_items
     }
     
     return render(request, 'payment.html', context)
 
-def dashboard(request):
-    pass
+@login_required(login_url="login")
+def chapa_payment(request, order_number):
+    order = get_object_or_404(Order, order_number=order_number)
+    callback_url = request.build_absolute_uri(reverse('chapa_payment_verify'))
+
+    try:
+        response = requests.post(
+            'https://api.chapa.co/v1/transaction/initialize',headers={'Authorization': f'Bearer {settings.CHAPA_SECRET_KEY}'},
+            json={
+                'amount': str(order.order_total),
+                'currency': 'ETB',
+                'email': order.email,
+                'first_name': order.first_name,
+                'last_name': order.last_name,
+                'tx_ref': str(order_number),
+                'callback_url': callback_url,
+                'return_url': callback_url,
+            },
+        )
+
+        response_data = response.json()
+        logger.debug(f"Chapa response: {response_data}")
+
+        if response_data.get('status') == 'success':
+            return redirect(response_data['data']['checkout_url'])
+        else:
+            return render(request, 'payment_error.html', {'error': response_data['message']})
+    except requests.RequestException as e:
+        logger.error(f"Chapa payment initialization error: {e}")
+        return render(request, 'payment_error.html', {'error': 'Payment initialization failed'})
+def chapa_payment_verify(request):
+     
+    tx_ref = request.GET.get('trx_ref')
+    print(tx_ref)
+    if tx_ref:
+        order = get_object_or_404(Order, order_number=tx_ref)
+        order.amount_paid = order.order_total
+        order.status = 'completed'
+        order.is_ordered = True
+        order.save()
+        CartItem.objects.filter(user=order.user).delete()
+    return render(request, "order_complete.html", {"tx_ref": tx_ref})
+
+

@@ -44,6 +44,11 @@ INSTALLED_APPS = [
     'carts',
     'core',
     'order',
+
+    # 'allauth',
+    # 'allauth.account',
+    # 'allauth.socialaccount',
+    # 'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -69,7 +74,7 @@ ROOT_URLCONF = 'ecommerce.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR +   '/templates'],
+        'DIRS': [BASE_DIR  + '/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -144,6 +149,22 @@ USE_TZ = True
 STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+#payment method using chapa
+CHAPA_SECRET_KEY = 'CHASECK_TEST-7EuF2opIju9YqZq1glD9WQ47fXjImkAA'
+
+# Email backend configuration
+CRISPY_TEMPLATE_PACK='bootstrap4'
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS =True
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#ACCOUNT_EMAIL_VERIFICATION = "none"
+
+EMAIL_HOST_USER = 'sdmh725@gmail.com'
+EMAIL_HOST_PASSWORD = 'kfvt egqd xzab pavq'
+PASSWORD_RESET_TIMEOUT = 14400
 
 # MEDIA_URL = '/media/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

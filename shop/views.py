@@ -1,13 +1,21 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+
+from order.models import Order
 
 #from carts.views import cartIDs
-from .models import Product
+from .models import Product, Review
 from core.models import Category
 from carts.views import cart, cartIDs
 #from carts.views import cartIDs
 from carts.models import CartItem
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
+
+
+from .forms import ReviewForm
+from django.db.models import  Avg
+
+from django.contrib import messages
 #from carts.views import get_cart_ids
 
 # Create your views here.
@@ -32,6 +40,41 @@ def shop(request, category_slug=None):
 def product_detail(request, category_slug, product_slug):
     detail = get_object_or_404(Product, category__slug=category_slug, slug=product_slug)
     in_cart = CartItem.objects.filter(cart__cart_id=cartIDs(request), product=detail).exists()
+
+
+    # Fetch reviews and calculate average rating
+    reviews = Review.objects.filter(product=detail)
+    average_rating = reviews.aggregate(Avg('rating'))['rating__avg'] if reviews.exists() else 0
+
+    # Check if the user is logged in and has purchased the product
+    can_review = False
+    if request.user.is_authenticated:
+        has_purchased = Order.objects.filter(user=request.user, orderproduct__product=detail).exists()
+        if has_purchased and not Review.objects.filter(user=request.user, product=detail).exists():
+            can_review = True
+
+    if request.method == 'POST' and can_review:
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.product = detail
+            review.user = request.user
+            review.save()
+            messages.success(request, 'Your review has been submitted successfully.')
+            return redirect('product_detail', category_slug=category_slug, product_slug=product_slug)
+    else:
+        form = ReviewForm()
+
+    return render(request, "product-detail.html", {
+        "detail": detail,
+        "in_cart": in_cart,
+        "reviews": reviews,
+        "average_rating": average_rating,
+        "form": form if can_review else None,
+        "can_review": can_review,
+        
+    })
+
     return render(request, "product-detail.html", {"detail": detail, "in_cart": in_cart})
 
 def search(request):
