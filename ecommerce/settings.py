@@ -71,10 +71,15 @@ LOGOUT_REDIRECT_URL = '/'
 
 ROOT_URLCONF = 'ecommerce.urls'
 
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR  + '/templates'],
+        #'DIRS': [os.path.join(BASE_DIR, "templates")],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -166,9 +171,3 @@ EMAIL_HOST_USER = 'sdmh725@gmail.com'
 EMAIL_HOST_PASSWORD = 'kfvt egqd xzab pavq'
 PASSWORD_RESET_TIMEOUT = 14400
 
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')

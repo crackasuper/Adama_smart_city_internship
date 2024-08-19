@@ -1,21 +1,20 @@
 
-from django.urls import path
+from django.urls import include, path
 from .views import  CustomPasswordResetView, SignUpView
 from . import views
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import views as auth_views
+from django.views.generic import TemplateView
 
 
 urlpatterns = [
     path('', views.home, name='home'),
     
     path('signup/', SignUpView.as_view(), name= 'signup'),
-    path('logout/', views.logout_user, name='logout'),
-    path('dasboard/',views.dashboard, name='dashboard'),
+    path('dashboard/',views.dashboard, name='dashboard'),
     path('profile/', views.profile, name='profile'),
-
-   # path('accounts/password_reset/', CustomPasswordResetView.as_view(), name='password_reset'),
-
-    
+    path('contact_us/',views.contact_us, name='contact_us'),
+    path('about_us/', views.about_us, name= 'about_us'),
+ 
    
 ]

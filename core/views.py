@@ -57,12 +57,9 @@ class CustomLogoutView(LogoutView):
     template_name = 'registration/logged_out.html'
 
 
-class CustomPasswordResetView(PasswordResetView):
-        template_name = 'registration/password_reset_form.html'
-        success_url = reverse_lazy('password_reset_done')
-        email_template_name = 'registration/password_reset_email.html'
 
-   
+
+
 class SignUpView(CreateView):
     form_class = SignUpForm
     template_name = 'registration/signup.html'
@@ -105,11 +102,11 @@ def dashboard(request):
     }
     
     return render(request, "dashboard.html", context)
+@login_required
+def contact_us(request):
+    
+    return render(request, 'contact_us.html')
 
-
-def logout_user(request):
-    logout(request)
-    return redirect('login')
-
-
-# Create your views here.
+@login_required
+def about_us(request):
+    return render(request, 'about_us.html')
