@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from shop.models import Product, Variation
 
 
-# Create your models here.
+# Create your models here.hfqjwat
 
 class Cart(models.Model):
     user = models.OneToOneField(User, on_delete=models.Case, null= True, blank=True)
